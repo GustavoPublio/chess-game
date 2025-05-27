@@ -7,7 +7,9 @@ namespace ChessConsole
     {
         static void Main(string[] args)
         {
-            ChessBoardClass c = new ChessBoardClass(8, 8);
+            ChessBoardClass Board = new ChessBoardClass(8, 8);
+            Screen.PrintChessBoard(Board);
+
             Console.ReadLine();
         }
     }

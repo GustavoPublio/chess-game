@@ -14,5 +14,10 @@ namespace ChessConsole.ChessBoard
             File = file;
             _pieces = new Piece[Rank, File];
         }
+
+        public Piece Piece(int Rank, int File)
+        {
+            return _pieces[Rank, File];
+        }
     }
 }
