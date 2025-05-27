@@ -1,5 +1,7 @@
 ﻿
 
+using ChessBoard;
+
 namespace ChessConsole.ChessBoard
 {
     class ChessBoardClass
@@ -20,10 +22,37 @@ namespace ChessConsole.ChessBoard
             return _pieces[Rank, File];
         }
 
+        public Piece Piece(Position position)
+        {
+            return _pieces[position.Rank, position.File];
+        }
+
+        public bool IsThereAPiece(Position position)
+        {
+            ValidatePosition(position);
+            return Piece(position) != null;
+        }
+
         public void PlacePiece(Piece p, Position position)
         {
+            if (IsThereAPiece(position)){
+                throw new ChessBoardException("A piece already exists in this position");
+            }
             _pieces[position.Rank, position.File] = p;
             p.Position = position;
+        }
+
+        public bool IsValidPosition(Position position)
+        {
+            return (position.Rank < 0 || position.Rank >= Rank || position.File < 0 || position.File >= File) ? false : true;
+        }
+
+        public void ValidatePosition(Position position)
+        {
+            if (!IsValidPosition(position))
+            {
+                throw new ChessBoardException("Invalid position!");
+            }
         }
     }
 }
