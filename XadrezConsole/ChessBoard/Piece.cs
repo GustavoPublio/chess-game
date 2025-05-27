@@ -8,9 +8,9 @@
         public int AmountMovements { get; protected set; }
         public ChessBoardClass ChessBoard { get; protected set; }
 
-        public Piece(Position position, ChessBoardClass chessBoard, Color color)
+        public Piece(ChessBoardClass chessBoard, Color color)
         {
-            Position = position;
+            Position = null;
             ChessBoard = chessBoard;
             Color = color;
             AmountMovements = 0;
