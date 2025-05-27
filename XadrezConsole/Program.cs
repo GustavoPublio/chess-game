@@ -1,13 +1,14 @@
 ﻿using System;
-using XadrezConsole.Tabuleiro;
+using ChessConsole.ChessBoard;
 
-namespace XadrezConsole
+namespace ChessConsole
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Position p = new Position(3, 4);
+            ChessBoardClass c = new ChessBoardClass(8, 8);
+            Console.ReadLine();
         }
     }
 }
