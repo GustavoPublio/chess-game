@@ -11,13 +11,21 @@ namespace ChessConsole
         {
             try
             {
-                ChessBoardClass Board = new ChessBoardClass(8, 8);
-                Board.PlacePiece(new Rook(Board, Color.Black), new Position(0, 0));
-                Board.PlacePiece(new Rook(Board, Color.Black), new Position(1, 3));
-                Board.PlacePiece(new King(Board, Color.Black), new Position(0, 2));
+                ChessMatch match = new ChessMatch();
+               
+                while(!match.Finished)
+                {
+                    Console.Clear();
+                    Screen.PrintChessBoard(match.Board);
 
-                Board.PlacePiece(new Rook(Board, Color.White), new Position(3, 5));
-                Screen.PrintChessBoard(Board);
+                    Console.Write("\nOrigin: ");
+                    Position origin = Screen.ReadChessPosition().ToPosition();
+                    Console.Write("Target: ");
+                    Position target = Screen.ReadChessPosition().ToPosition();
+                    match.MakeMove(origin, target);
+                }
+
+                Screen.PrintChessBoard(match.Board);
             }
             catch (ChessBoardException e)
             {

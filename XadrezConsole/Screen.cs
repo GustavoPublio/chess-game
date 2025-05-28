@@ -1,4 +1,5 @@
 ﻿using System;
+using Chess;
 using System.Threading.Channels;
 using ChessConsole.ChessBoard;
 
@@ -25,6 +26,14 @@ namespace ChessConsole
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h ");
+        }
+
+        public static ChessPosition ReadChessPosition()
+        {
+            string s = Console.ReadLine();
+            char File = s[0];
+            int Rank = int.Parse(s[1] + "");
+            return new ChessPosition(File, Rank);
         }
 
         public static void PrintPiece(Piece piece)

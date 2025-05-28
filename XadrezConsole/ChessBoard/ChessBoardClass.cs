@@ -42,6 +42,19 @@ namespace ChessConsole.ChessBoard
             p.Position = position;
         }
 
+        public Piece RemovePiece(Position position)
+        {
+            if (Piece(position) == null)
+            {
+                return null;
+            }
+            Piece aux = Piece(position);
+            aux.Position = null;
+            _pieces[position.Rank, position.File] = null;
+            return aux;
+        }
+
+
         public bool IsValidPosition(Position position)
         {
             return (position.Rank < 0 || position.Rank >= Rank || position.File < 0 || position.File >= File) ? false : true;
