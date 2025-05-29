@@ -34,7 +34,7 @@ namespace Chess
                 {
                     break;
                 }
-                position.Rank -= 1;
+                position.Rank--;
             }
 
             position.SetValues(Position.Rank + 1, Position.File);//
@@ -45,7 +45,7 @@ namespace Chess
                 {
                     break;
                 }
-                position.Rank += 1;
+                position.Rank++;
             }
 
             position.SetValues(Position.Rank, Position.File + 1);
@@ -56,7 +56,7 @@ namespace Chess
                 {
                     break;
                 }
-                position.File += 1;
+                position.File++;
             }
 
             position.SetValues(Position.Rank, Position.File - 1);
@@ -67,7 +67,7 @@ namespace Chess
                 {
                     break;
                 }
-                position.File -= 1;
+                position.File--;
             }
 
 

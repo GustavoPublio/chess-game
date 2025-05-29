@@ -15,22 +15,35 @@ namespace ChessConsole
 
                 while (!match.Finished)
                 {
-                    Console.Clear();
-                    Screen.PrintChessBoard(match.Board);
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintChessBoard(match.Board);
+                        Console.WriteLine("\nTurn: " + match.Turn);
+                        Console.WriteLine("Waiting for play: " + match.Player);
 
-                    Console.Write("\nOrigin: ");
-                    Position origin = Screen.ReadChessPosition().ToPosition();
+                        Console.Write("\nOrigin: ");
+                        Position origin = Screen.ReadChessPosition().ToPosition();
+                        match.ValidateOriginPosition(origin);
 
-                    bool[,] possiblePositions = match.Board.Piece(origin).PossibleMoves();
+                        bool[,] possiblePositions = match.Board.Piece(origin).PossibleMoves();
 
-                    Console.Clear();
-                    Screen.PrintChessBoard(match.Board, possiblePositions);
+                        Console.Clear();
+                        Screen.PrintChessBoard(match.Board, possiblePositions);
 
 
 
-                    Console.Write("\nTarget: ");
-                    Position target = Screen.ReadChessPosition().ToPosition();
-                    match.MakeMove(origin, target);
+                        Console.Write("\nTarget: ");
+                        Position target = Screen.ReadChessPosition().ToPosition();
+                        match.ValidateTargetPosition(origin, target);
+
+                        match.PeformMove(origin, target);
+                    }
+                    catch (ChessBoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
 
                 Screen.PrintChessBoard(match.Board);
