@@ -11,8 +11,9 @@ namespace Chess
         public int Turn { get; private set; }
         public Color Player { get; private set; }
         public bool Finished { get; private set; }
-        private HashSet<Piece> Pìeces;
+        private HashSet<Piece> Pieces;
         private HashSet<Piece> Captured;
+        public bool Check { get; private set; }
 
         public ChessMatch()
         {
@@ -20,12 +21,13 @@ namespace Chess
             Turn = 1;
             Player = Color.White;
             Finished = false;
-            Pìeces = new HashSet<Piece>();
+            Check = false;
+            Pieces = new HashSet<Piece>();
             Captured = new HashSet<Piece>();
             PlacePieces();
         }
 
-        public void MakeMove(Position origin, Position target) {
+        public Piece MakeMove(Position origin, Position target) {
             Piece p = Board.RemovePiece(origin);
             p.IncrementMoveCount();
             Piece capturedPiece = Board.RemovePiece(target);
@@ -34,12 +36,40 @@ namespace Chess
             {
                 Captured.Add(capturedPiece);
             }
+            return capturedPiece;
+        }
 
+        public void UndoMove(Position origin, Position target, Piece capturedPiece)
+        {
+            Piece p = Board.RemovePiece(target);
+            p.DecrementMoveCount();
+            if(capturedPiece != null)
+            {
+                Board.PlacePiece(capturedPiece, target);
+                Captured.Remove(capturedPiece);
+            }
+            Board.PlacePiece(p, origin);
         }
 
         public void PeformMove(Position origin, Position target)
         {
-            MakeMove(origin, target);
+            Piece capturedPiece = MakeMove(origin, target);
+
+            if (IsInCheck(Player))
+            {
+                UndoMove(origin, target, capturedPiece);
+                throw new ChessBoardException("You cannot put yourself in check!");
+            }
+
+            if (IsInCheck(Opponent(Player)))
+            {
+                Check = true;
+            } 
+            else
+            {
+                Check = false;
+            }
+
             Turn++;
             SwitchPlayer();
         }
@@ -77,7 +107,7 @@ namespace Chess
             HashSet<Piece> aux = new HashSet<Piece>();
             foreach(Piece p in Captured)
             {
-                if(p.Color == color)////
+                if(p.Color == color)
                 {
                     aux.Add(p);
                 }
@@ -88,21 +118,56 @@ namespace Chess
         public HashSet<Piece> PiecesInPlay(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
-            foreach (Piece p in Captured)
+            foreach (Piece p in Pieces)
             {
                 if (p.Color == color)
                 {
                     aux.Add(p);
                 }
             }
-            aux.ExceptWith(CapturedPieces(color));/////
+            aux.ExceptWith(CapturedPieces(color));
             return aux;
         }
 
+        private Color Opponent(Color color)
+        {
+            return (color == Color.White) ? Color.Black : Color.White;
+        }
+
+        private Piece King(Color color)
+        {
+            foreach(Piece p in PiecesInPlay(color))
+            {
+                if(p is King)
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
+
+        public bool IsInCheck(Color color)
+        {
+            Piece K = King(color);
+            if (K == null)
+            {
+                throw new ChessBoardException("There is no " + color + " king on the board");
+            }
+
+            foreach (Piece p in PiecesInPlay(Opponent(color)))
+            {
+                bool[,] mat = p.PossibleMoves();
+                if (mat != null && mat[K.Position.Rank, K.Position.File])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public void PlaceNewPiece(char file, int rank, Piece piece)
         {
             Board.PlacePiece(piece, new ChessPosition(file, rank).ToPosition());
-            Pìeces.Add(piece);
+            Pieces.Add(piece);
         }
 
         private void PlacePieces()

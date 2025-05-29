@@ -43,5 +43,10 @@
         {
             AmountMovements++;
         }
+
+        public void DecrementMoveCount()
+        {
+            AmountMovements--;
+        }
     }
 }
