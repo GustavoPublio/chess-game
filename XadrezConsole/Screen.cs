@@ -1,12 +1,48 @@
 ﻿using System;
 using Chess;
+using System.Collections.Generic;
 using System.Threading.Channels;
 using ChessConsole.ChessBoard;
+using System.Text.RegularExpressions;
 
 namespace ChessConsole
 {
     class Screen
     {
+
+        public static void PrintMatch(ChessMatch match)
+        {
+            PrintChessBoard(match.Board);
+            Console.WriteLine();
+            PrintCapturedPieces(match);
+            Console.WriteLine("\nTurn: " + match.Turn);
+            Console.WriteLine("Waiting for play: " + match.Player);
+
+        }
+
+        public static void PrintCapturedPieces(ChessMatch match)
+        {
+            Console.WriteLine("Captured pieces: ");
+            Console.Write("White: ");
+            PrintChessPiecesSet(match.CapturedPieces(Color.White));
+            Console.Write("\nBlack: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            PrintChessPiecesSet(match.CapturedPieces(Color.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void PrintChessPiecesSet(HashSet<Piece> set)
+        {
+            Console.Write("[");
+            foreach (Piece p in set)
+            {
+                Console.Write(p + " ");
+            }
+            Console.Write("]");
+        }
+
         public static void PrintChessBoard(ChessBoardClass ChessBoard)
         {
             for (int i = 0; i < ChessBoard.Rank; i++)
