@@ -35,7 +35,7 @@ namespace ChessConsole
                         Position target = Screen.ReadChessPosition().ToPosition();
                         match.ValidateTargetPosition(origin, target);
 
-                        match.PeformMove(origin, target);
+                        match.PerformMove(origin, target);
                     }
                     catch (ChessBoardException e)
                     {
@@ -43,8 +43,8 @@ namespace ChessConsole
                         Console.ReadLine();
                     }
                 }
-
-                Screen.PrintChessBoard(match.Board);
+                Console.Clear();
+                Screen.PrintMatch(match);
             }
             catch (ChessBoardException e)
             {

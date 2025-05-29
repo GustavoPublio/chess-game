@@ -37,7 +37,7 @@ namespace Chess
                 position.Rank--;
             }
 
-            position.SetValues(Position.Rank + 1, Position.File);//
+            position.SetValues(Position.Rank + 1, Position.File);
             while (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;

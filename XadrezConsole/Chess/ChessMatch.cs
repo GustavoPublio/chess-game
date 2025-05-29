@@ -51,7 +51,7 @@ namespace Chess
             Board.PlacePiece(p, origin);
         }
 
-        public void PeformMove(Position origin, Position target)
+        public void PerformMove(Position origin, Position target)
         {
             Piece capturedPiece = MakeMove(origin, target);
 
@@ -70,8 +70,15 @@ namespace Chess
                 Check = false;
             }
 
-            Turn++;
-            SwitchPlayer();
+            if (CheckMate(Opponent(Player)))
+            {
+                Finished = true;
+            }
+            else
+            {
+                Turn++;
+                SwitchPlayer();
+            }
         }
 
         public void ValidateOriginPosition(Position position)
@@ -164,6 +171,38 @@ namespace Chess
             }
             return false;
         }
+
+        public bool CheckMate(Color color)
+        {
+            if (!IsInCheck(color))
+            {
+                return false;
+            }
+            foreach(Piece p in PiecesInPlay(color))
+            {
+                bool[,] mat = p.PossibleMoves();
+                for(int i = 0; i < Board.Rank; i++)
+                {
+                    for(int j = 0; j < Board.File; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = p.Position;
+                            Position target = new Position(i, j);
+                            Piece capturedPiece = MakeMove(origin, target);
+                            bool testCheck = IsInCheck(color);
+                            UndoMove(origin, target, capturedPiece);
+                            if(!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        
         public void PlaceNewPiece(char file, int rank, Piece piece)
         {
             Board.PlacePiece(piece, new ChessPosition(file, rank).ToPosition());
@@ -173,18 +212,11 @@ namespace Chess
         private void PlacePieces()
         {
             PlaceNewPiece('c', 1, new Rook(Board, Color.White));
-            PlaceNewPiece('c', 2, new Rook(Board, Color.White));
-            PlaceNewPiece('d', 2, new Rook(Board, Color.White));
-            PlaceNewPiece('e', 2, new Rook(Board, Color.White));
-            PlaceNewPiece('e', 1, new Rook(Board, Color.White));
+            PlaceNewPiece('h', 7, new Rook(Board, Color.White));
             PlaceNewPiece('d', 1, new King(Board, Color.White));
 
-            PlaceNewPiece('c', 7, new Rook(Board, Color.Black));
-            PlaceNewPiece('c', 8, new Rook(Board, Color.Black));
-            PlaceNewPiece('d', 7, new Rook(Board, Color.Black));
-            PlaceNewPiece('e', 7, new Rook(Board, Color.Black));
-            PlaceNewPiece('e', 8, new Rook(Board, Color.Black));
-            PlaceNewPiece('d', 8, new King(Board, Color.Black));
+            PlaceNewPiece('b', 8, new Rook(Board, Color.Black));
+            PlaceNewPiece('a', 8, new King(Board, Color.Black));
 
 
         }
