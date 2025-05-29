@@ -11,6 +11,12 @@
             File = file;
         }
 
+        public void SetValues(int rank, int file)
+        {
+            Rank = rank;
+            File = file;
+        }
+
         public override string ToString()
         {
             return Rank + ", " + File;

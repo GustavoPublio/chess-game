@@ -12,15 +12,23 @@ namespace ChessConsole
             try
             {
                 ChessMatch match = new ChessMatch();
-               
-                while(!match.Finished)
+
+                while (!match.Finished)
                 {
                     Console.Clear();
                     Screen.PrintChessBoard(match.Board);
 
                     Console.Write("\nOrigin: ");
                     Position origin = Screen.ReadChessPosition().ToPosition();
-                    Console.Write("Target: ");
+
+                    bool[,] possiblePositions = match.Board.Piece(origin).PossibleMoves();
+
+                    Console.Clear();
+                    Screen.PrintChessBoard(match.Board, possiblePositions);
+
+
+
+                    Console.Write("\nTarget: ");
                     Position target = Screen.ReadChessPosition().ToPosition();
                     match.MakeMove(origin, target);
                 }
