@@ -1,17 +1,15 @@
 ﻿using ChessConsole.ChessBoard;
-
-namespace Chess
+namespace ChessConsole.Chess
 {
-    class King : Piece
+    class Knight : Piece
     {
-        public King(ChessBoardClass chessBoard, Color color) : base(chessBoard, color)
+        public Knight(ChessBoardClass chessBoard, Color color) : base(chessBoard, color)
         {
-
         }
 
         public override string ToString()
         {
-            return "K";
+            return "N";
         }
 
         private bool CanMove(Position position)
@@ -19,6 +17,7 @@ namespace Chess
             Piece p = ChessBoard.Piece(position);
             return p == null || p.Color != this.Color;
         }
+
         public override bool[,] PossibleMoves()
         {
             bool[,] mat = new bool[ChessBoard.Rank, ChessBoard.File];
@@ -26,49 +25,49 @@ namespace Chess
 
             Position position = new Position(0, 0);
 
-            position.SetValues(Position.Rank - 1, Position.File);
+            position.SetValues(Position.Rank - 1, Position.File - 2);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
             }
 
-            position.SetValues(Position.Rank - 1, Position.File + 1);
+            position.SetValues(Position.Rank - 2, Position.File - 1);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
             }
 
-            position.SetValues(Position.Rank, Position.File + 1);
+            position.SetValues(Position.Rank - 2, Position.File + 1);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
             }
 
-            position.SetValues(Position.Rank + 1, Position.File + 1);
+            position.SetValues(Position.Rank - 1, Position.File + 2);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
             }
 
-            position.SetValues(Position.Rank + 1, Position.File);
+            position.SetValues(Position.Rank + 1, Position.File + 2);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
             }
 
-            position.SetValues(Position.Rank + 1, Position.File - 1);
+            position.SetValues(Position.Rank + 2, Position.File + 1);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
             }
 
-            position.SetValues(Position.Rank, Position.File - 1);
+            position.SetValues(Position.Rank + 2, Position.File - 1);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
             }
 
-            position.SetValues(Position.Rank - 1, Position.File - 1);
+            position.SetValues(Position.Rank + 1, Position.File - 2);
             if (ChessBoard.IsValidPosition(position) && CanMove(position))
             {
                 mat[position.Rank, position.File] = true;
@@ -76,5 +75,6 @@ namespace Chess
 
             return mat;
         }
+
     }
 }
