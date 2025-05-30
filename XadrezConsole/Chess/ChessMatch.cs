@@ -37,6 +37,27 @@ namespace Chess
             {
                 Captured.Add(capturedPiece);
             }
+
+            if (p is King && target.File == origin.File + 2) 
+            {
+                Position originRook = new Position(origin.Rank, origin.File + 3);
+                Position targetRook = new Position(origin.Rank, origin.File + 1);
+                Piece R = Board.RemovePiece(originRook);
+                R.IncrementMoveCount();
+                Board.PlacePiece(R, targetRook);    
+            }
+
+
+            if (p is King && target.File == origin.File - 2) 
+            {
+                Position originRook = new Position(origin.Rank, origin.File - 4);
+                Position targetRook = new Position(origin.Rank, origin.File - 1);
+                Piece R = Board.RemovePiece(originRook);
+                R.IncrementMoveCount();
+                Board.PlacePiece(R, targetRook);
+            }
+
+
             return capturedPiece;
         }
 
@@ -50,6 +71,24 @@ namespace Chess
                 Captured.Remove(capturedPiece);
             }
             Board.PlacePiece(p, origin);
+
+            if (p is King && target.File == origin.File + 2) 
+            {
+                Position originRook = new Position(origin.Rank, origin.File + 3);
+                Position targetRook = new Position(origin.Rank, origin.File + 1);
+                Piece R = Board.RemovePiece(targetRook);
+                R.DecrementMoveCount();
+                Board.PlacePiece(R, originRook);
+            }
+
+            if (p is King && target.File == origin.File - 2) 
+            {
+                Position originRook = new Position(origin.Rank, origin.File - 4);
+                Position targetRook = new Position(origin.Rank, origin.File - 1);
+                Piece R = Board.RemovePiece(targetRook);
+                R.DecrementMoveCount();
+                Board.PlacePiece(R, originRook);
+            }
         }
 
         public void PerformMove(Position origin, Position target)
@@ -216,7 +255,7 @@ namespace Chess
             PlaceNewPiece('b', 1, new Knight(Board, Color.White));
             PlaceNewPiece('c', 1, new Bishop(Board, Color.White));
             PlaceNewPiece('d', 1, new Queen(Board, Color.White));
-            PlaceNewPiece('e', 1, new King(Board, Color.White));
+            PlaceNewPiece('e', 1, new King(Board, Color.White , this));
             PlaceNewPiece('f', 1, new Bishop(Board, Color.White));
             PlaceNewPiece('g', 1, new Knight(Board, Color.White));
             PlaceNewPiece('h', 1, new Rook(Board, Color.White));
@@ -234,7 +273,7 @@ namespace Chess
             PlaceNewPiece('b', 8, new Knight(Board, Color.Black));
             PlaceNewPiece('c', 8, new Bishop(Board, Color.Black));
             PlaceNewPiece('d', 8, new Queen(Board, Color.Black));
-            PlaceNewPiece('e', 8, new King(Board, Color.Black));
+            PlaceNewPiece('e', 8, new King(Board, Color.Black, this));
             PlaceNewPiece('f', 8, new Bishop(Board, Color.Black));
             PlaceNewPiece('g', 8, new Knight(Board, Color.Black));
             PlaceNewPiece('h', 8, new Rook(Board, Color.Black));
