@@ -1,12 +1,14 @@
-﻿using ChessConsole.ChessBoard;
+﻿using Chess;
+using ChessConsole.ChessBoard;
 
 namespace ChessConsole.Chess
 {
     class Pawn : Piece
     {
-
-        public Pawn(ChessBoardClass chessBoard, Color color) : base(chessBoard, color)
+        private ChessMatch _match;
+        public Pawn(ChessBoardClass chessBoard, Color color, ChessMatch match) : base(chessBoard, color)
         {
+            _match = match;
         }
 
         public override string ToString()
@@ -57,6 +59,20 @@ namespace ChessConsole.Chess
                 {
                     mat[position.Rank, position.File] = true;
                 }
+
+                if (Position.Rank == 3) // 
+                {
+                    Position left = new Position(Position.Rank, Position.File - 1); // 
+                    if(ChessBoard.IsValidPosition(left) && HasEnemy(left) && ChessBoard.Piece(left) == _match._vulnerableEnPassant)
+                    {
+                        mat[left.Rank - 1, left.File] = true;
+                    }
+                    Position right = new Position(Position.Rank, Position.File + 1); // 
+                    if (ChessBoard.IsValidPosition(right) && HasEnemy(right) && ChessBoard.Piece(right) == _match._vulnerableEnPassant)
+                    {
+                        mat[right.Rank - 1, right.File] = true;
+                    }
+                }
             }
             else {
                 position.SetValues(Position.Rank + 1, Position.File);
@@ -81,6 +97,20 @@ namespace ChessConsole.Chess
                 if (ChessBoard.IsValidPosition(position) && HasEnemy(position))
                 {
                     mat[position.Rank, position.File] = true;
+                }
+
+                if (Position.Rank == 4) // 
+                {
+                    Position left = new Position(Position.Rank, Position.File - 1); // 
+                    if (ChessBoard.IsValidPosition(left) && HasEnemy(left) && ChessBoard.Piece(left) == _match._vulnerableEnPassant)
+                    {
+                        mat[left.Rank + 1, left.File] = true;
+                    }
+                    Position right = new Position(Position.Rank, Position.File + 1); // 
+                    if (ChessBoard.IsValidPosition(right) && HasEnemy(right) && ChessBoard.Piece(right) == _match._vulnerableEnPassant)
+                    {
+                        mat[right.Rank + 1, right.File] = true;
+                    }
                 }
             }
 
