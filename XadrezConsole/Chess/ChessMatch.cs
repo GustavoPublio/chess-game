@@ -137,6 +137,19 @@ namespace Chess
                 throw new ChessBoardException("You cannot put yourself in check!");
             }
 
+            Piece p = Board.Piece(target);
+            if (p is Pawn)
+            {
+                if ((p.Color == Color.White && target.Rank == 0) || (p.Color == Color.Black && target.Rank == 7))
+                {
+                    p = Board.RemovePiece(target);
+                    Pieces.Remove(p); //
+                    Piece queen = new Queen(Board, p.Color);
+                    Board.PlacePiece(queen, target);
+                    Pieces.Add(queen);
+                }
+            }
+
             if (IsInCheck(Opponent(Player)))
             {
                 Check = true;
@@ -156,7 +169,6 @@ namespace Chess
                 SwitchPlayer();
             }
 
-            Piece p = Board.Piece(target);
             if (p is Pawn && (target.Rank == origin.Rank - 2 || target.Rank == origin.Rank + 2)){ //
                 _vulnerableEnPassant = p;
             }
